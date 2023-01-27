@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{% block title %} User List {% endblock %}</h1>
+
+    {% if users|length == 0 %}
+        <h3>You have no user</h3>
+    {% else %}
+        <h3>You have {{ users|length }} users</h3>
+        {% for user in users %}
+            <div class="message">
+                {% if user['admin'] %}
+                    <h3>Super User</h3>
+                {% endif %}
+                <h3><strong>Name:</strong> {{ user['username']|title }}</h3>
+                <h4><strong>Email:</strong> {{ user['email'] }}</h4>
+                <h4><strong>Joined date:</strong> {{ user['created_on']|datefmt }}</h4>
+                <h4><strong>Number of post:</strong> {{ user['posts']|length }}</h4>
+            </div>
+            <br>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

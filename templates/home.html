@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{% block title %} Blog {% endblock %}</h1>
+    {% if login_require %}
+        <p>Please <a href="{{ url_for('login') }}">login</a>!</p>
+    {% else %}
+        {% if blogs|length == 0 %}
+            <h3>You have no blog</h3>
+        {% else %}
+            {% for blog in blogs %}
+                <div class="message">
+                    <h3><strong>{{ blog['user']['username']|title }}</strong> {{ blog['updated_on']|datefmt }}</h3>
+                    <h3>Title: {{ blog['title']|title }}</h3>
+                    <p>{{ blog['content'] }}</p>
+                    {% if session['user_id'] == blog['user_id'] %}
+                        <a href="{{ url_for('edit', id=blog['_id']) }}">Edit</a>
+                        <br>
+                    {% endif %}
+                    {% if session['admin'] or session['user_id'] == blog['user_id'] %}
+                        <a href="{{ url_for('delete', id=blog['_id']) }}">Delete</a>
+                    {% endif %}
+                </div>
+                <br>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+{% endblock %}

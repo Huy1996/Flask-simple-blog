@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{% block title %} Post {% endblock %}</h1>
+    {% if session["username"] %}
+        <form method="POST">
+            {{ form.csrf_token }}
+            <div>
+                <label>{{ form.title.label }}</label>
+                <br>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <ul class="errors">
+                        {% for error in form.title.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <br>
+            <div>
+                <label>{{ form.content.label }}</label>
+                <br>
+                {{ form.content(rows=10, cols=50) }}
+                {% if form.content.errors %}
+                    <ul class="errors">
+                        {% for error in form.content.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <button type="submit">Send</button>
+
+        </form>
+    {% else %}
+        <p>Please <a href="{{ url_for('login') }}">login</a> to be able to post a new blog.</p>
+    {% endif %}
+{% endblock %}
